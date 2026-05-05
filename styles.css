@@ -853,8 +853,12 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
 .form-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 16px;
+}
+
+@media (min-width: 601px) {
+  .form-row { grid-template-columns: 1fr 1fr; }
 }
 
 .form-field {
@@ -882,14 +886,6 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
 .form-field select { cursor: pointer; padding-top: 22px; }
 
-/* Select label always floated — select always shows visible text */
-.form-field select ~ label {
-  top: 8px;
-  font-size: 0.68rem;
-  color: var(--gold);
-  transform: none;
-}
-
 .form-field input:focus,
 .form-field select:focus,
 .form-field textarea:focus {
@@ -906,6 +902,14 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   color: var(--mid-text);
   pointer-events: none;
   transition: top 0.2s, font-size 0.2s, color 0.2s;
+}
+
+/* Select always shows text — keep label permanently floated at top */
+.form-field select ~ label {
+  top: 8px !important;
+  font-size: 0.68rem !important;
+  color: var(--gold) !important;
+  transform: none !important;
 }
 
 .form-field textarea ~ label { top: 20px; transform: none; }
@@ -1440,7 +1444,7 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
   .hero-names { font-size: clamp(3rem, 15vw, 5.5rem); flex-direction: column; gap: 8px; }
 
-  .form-row { grid-template-columns: 1fr; gap: 12px; }
+  .form-row { grid-template-columns: 1fr; }
 
   .events-grid { grid-template-columns: 1fr; }
 
