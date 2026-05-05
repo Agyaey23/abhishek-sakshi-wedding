@@ -50,14 +50,15 @@ gsap.registerPlugin(ScrollTrigger);
 /* ── 2. HERO PARALLAX on scroll ── */
 (function initHeroParallax() {
   gsap.to('.hero-content', {
-    y: 120,
-    opacity: 0,
+    y: 100,
     ease: 'none',
     scrollTrigger: {
       trigger: '#hero',
       start: 'top top',
       end: 'bottom top',
-      scrub: true,
+      scrub: 1,
+      invalidateOnRefresh: true,
+      onLeaveBack: () => gsap.set('.hero-content', { opacity: 1 }),
     }
   });
 })();
@@ -652,4 +653,15 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   });
+});
+
+/* ── 14. SCROLLTRIGGER REFRESH — fix positions after fonts & images load ── */
+window.addEventListener('load', () => {
+  ScrollTrigger.refresh();
+  // Ensure hero is always fully visible when at top
+  window.addEventListener('scroll', () => {
+    if (window.scrollY < 10) {
+      gsap.set('.hero-content', { opacity: 1 });
+    }
+  }, { passive: true });
 });
