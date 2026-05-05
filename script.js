@@ -304,8 +304,8 @@ gsap.registerPlugin(ScrollTrigger);
 
 /* ── 9. RSVP FORM ── */
 (function initRSVP() {
-  const TELEGRAM_TOKEN   = 'YOUR_BOT_TOKEN'; // ← paste token from @BotFather
-  const TELEGRAM_CHAT_ID = 'YOUR_CHAT_ID';   // ← paste your chat ID
+  const TELEGRAM_TOKEN   = '8730972056:AAGR1W3nmf79R_loJtmZ4XgQN83Fs_bj-9U';
+  const TELEGRAM_CHAT_ID = '6173529755';
 
   function sendTelegram(rsvp) {
     if (TELEGRAM_TOKEN === 'YOUR_BOT_TOKEN') return;
