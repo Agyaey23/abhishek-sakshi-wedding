@@ -19,7 +19,7 @@
   --rose:        #e8a0a0;
 
   --font-script: 'Great Vibes', cursive;
-  --font-name:   'Pinyon Script', cursive;
+  --font-name:   'Cormorant Garamond', Georgia, serif;
   --font-serif:  'Playfair Display', Georgia, serif;
   --font-sans:   'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
@@ -210,7 +210,8 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .name-bride {
   font-family: var(--font-name);
   font-size: clamp(4.5rem, 13vw, 12rem);
-  font-weight: 400;
+  font-weight: 300;
+  font-style: italic;
   color: var(--white);
   line-height: 0.95;
   display: block;
