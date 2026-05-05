@@ -304,23 +304,29 @@ gsap.registerPlugin(ScrollTrigger);
 
 /* ── 9. RSVP FORM ── */
 (function initRSVP() {
-  const WHATSAPP_NUMBER = '919599338972';
+  const TELEGRAM_TOKEN   = 'YOUR_BOT_TOKEN'; // ← paste token from @BotFather
+  const TELEGRAM_CHAT_ID = 'YOUR_CHAT_ID';   // ← paste your chat ID
 
-  function openWhatsApp(rsvp) {
+  function sendTelegram(rsvp) {
+    if (TELEGRAM_TOKEN === 'YOUR_BOT_TOKEN') return;
     const attending = rsvp.attending === 'yes' ? '✅ Attending' : '❌ Not Attending';
     const events    = rsvp.events.length ? rsvp.events.join(', ') : 'None selected';
-    const msg = [
-      `🎊 *New RSVP — Abhishek & Sakshi Wedding*`,
-      ``,
+    const text = [
+      '🎊 *New RSVP — Abhishek & Sakshi Wedding*',
+      '',
       `👤 *Name:* ${rsvp.name}`,
       `📧 *Email:* ${rsvp.email}`,
-      `👥 *Guests:* ${rsvp.count}`,
+      `👥 *Guests:* ${rsvp.count || '—'}`,
       `*${attending}*`,
       `📅 *Events:* ${events}`,
       rsvp.message ? `💬 *Message:* "${rsvp.message}"` : null,
     ].filter(Boolean).join('\n');
 
-    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+    fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text, parse_mode: 'Markdown' }),
+    }).catch(() => {});
   }
 
   const form      = document.getElementById('rsvpForm');
@@ -394,7 +400,7 @@ gsap.registerPlugin(ScrollTrigger);
           form.style.display = 'none';
           thank.style.display = 'block';
           gsap.from(thank, { opacity: 0, y: 30, duration: 0.7, ease: 'power3.out' });
-          openWhatsApp(rsvp);
+          sendTelegram(rsvp);
         }
       });
     }, 1000);
