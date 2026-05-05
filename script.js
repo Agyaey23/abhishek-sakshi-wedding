@@ -303,40 +303,34 @@ gsap.registerPlugin(ScrollTrigger);
 
 /* ── 9. RSVP FORM ── */
 (function initRSVP() {
-  const CALLMEBOT_PHONE  = '+919599338972';
-  const CALLMEBOT_APIKEY = 'YOUR_API_KEY'; // ← replace with the key CallMeBot sends you on WhatsApp
+  const WHATSAPP_NUMBER = '919599338972';
 
-  function sendWhatsApp(rsvp) {
-    if (CALLMEBOT_APIKEY === 'YOUR_API_KEY') return; // skip until key is set
+  function openWhatsApp(rsvp) {
     const attending = rsvp.attending === 'yes' ? '✅ Attending' : '❌ Not Attending';
     const events    = rsvp.events.length ? rsvp.events.join(', ') : 'None selected';
     const msg = [
-      `🎊 New RSVP — Abhishek & Sakshi Wedding`,
+      `🎊 *New RSVP — Abhishek & Sakshi Wedding*`,
       ``,
-      `👤 ${rsvp.name}`,
-      `📧 ${rsvp.email}`,
-      `👥 Guests: ${rsvp.count}`,
-      `${attending}`,
-      `📅 Events: ${events}`,
-      rsvp.message ? `💬 "${rsvp.message}"` : null,
+      `👤 *Name:* ${rsvp.name}`,
+      `📧 *Email:* ${rsvp.email}`,
+      `👥 *Guests:* ${rsvp.count}`,
+      `*${attending}*`,
+      `📅 *Events:* ${events}`,
+      rsvp.message ? `💬 *Message:* "${rsvp.message}"` : null,
     ].filter(Boolean).join('\n');
 
-    const url = `https://api.callmebot.com/whatsapp.php?phone=${encodeURIComponent(CALLMEBOT_PHONE)}&text=${encodeURIComponent(msg)}&apikey=${CALLMEBOT_APIKEY}`;
-    fetch(url).catch(() => {}); // fire-and-forget, don't block the thank-you screen
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
   }
 
-  const form     = document.getElementById('rsvpForm');
-  const thank    = document.getElementById('rsvpThank');
-  const thankMsg = document.getElementById('thankMsg');
+  const form      = document.getElementById('rsvpForm');
+  const thank     = document.getElementById('rsvpThank');
+  const thankMsg  = document.getElementById('thankMsg');
   const submitBtn = document.getElementById('submitBtn');
 
   if (!form) return;
 
   gsap.from(form, {
-    opacity: 0,
-    y: 40,
-    duration: 1,
-    ease: 'power3.out',
+    opacity: 0, y: 40, duration: 1, ease: 'power3.out',
     scrollTrigger: { trigger: form, start: 'top 80%', once: true },
   });
 
@@ -344,9 +338,9 @@ gsap.registerPlugin(ScrollTrigger);
     e.preventDefault();
     let valid = true;
 
-    const name     = document.getElementById('guestName');
-    const email    = document.getElementById('guestEmail');
-    const count    = document.getElementById('guestCount');
+    const name      = document.getElementById('guestName');
+    const email     = document.getElementById('guestEmail');
+    const count     = document.getElementById('guestCount');
     const attending = form.querySelector('input[name="attending"]:checked');
 
     document.querySelectorAll('.field-err').forEach(el => el.classList.remove('visible'));
@@ -378,14 +372,14 @@ gsap.registerPlugin(ScrollTrigger);
     const checkedEvents = [...form.querySelectorAll('input[name="events"]:checked')]
       .map(cb => cb.value.charAt(0).toUpperCase() + cb.value.slice(1));
 
-    sendWhatsApp({
+    const rsvp = {
       name:      name.value.trim(),
       email:     email.value.trim(),
       count:     count.value || '—',
       attending: attending.value,
       events:    checkedEvents,
       message:   document.getElementById('message').value.trim(),
-    });
+    };
 
     setTimeout(() => {
       const isYes = attending.value === 'yes';
@@ -399,9 +393,10 @@ gsap.registerPlugin(ScrollTrigger);
           form.style.display = 'none';
           thank.style.display = 'block';
           gsap.from(thank, { opacity: 0, y: 30, duration: 0.7, ease: 'power3.out' });
+          openWhatsApp(rsvp);
         }
       });
-    }, 1400);
+    }, 1000);
   });
 })();
 
